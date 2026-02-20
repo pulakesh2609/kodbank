@@ -99,6 +99,21 @@ async function authenticate(req, res, next) {
     }
 }
 
+// ── Lazy DB Init (runs once on first request in serverless) ──
+let dbInitialized = false;
+app.use(async (req, res, next) => {
+    if (!dbInitialized) {
+        try {
+            await initDB();
+            dbInitialized = true;
+        } catch (err) {
+            console.error('❌  DB init failed:', err);
+            return res.status(500).json({ error: 'Database initialization failed' });
+        }
+    }
+    next();
+});
+
 // ══════════════════════════════════════════════════════════════
 //  ROUTES
 // ══════════════════════════════════════════════════════════════
@@ -169,7 +184,7 @@ app.post('/api/login', async (req, res) => {
         res.cookie('kodbank_token', token, {
             httpOnly: true,
             secure: isProduction,
-            sameSite: 'Lax',
+            sameSite: isProduction ? 'None' : 'Lax',
             maxAge: 3600000, // 1 hour
         });
 
@@ -199,14 +214,20 @@ app.get('/api/balance', authenticate, async (req, res) => {
     }
 });
 
-// ── Start ────────────────────────────────────────────────────
-initDB()
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`🚀  Kodbank server running on http://localhost:${PORT}`);
+// ── Export for Vercel Serverless ──────────────────────────────
+module.exports = app;
+
+// ── Local Development Mode ───────────────────────────────────
+if (require.main === module) {
+    initDB()
+        .then(() => {
+            dbInitialized = true;
+            app.listen(PORT, () => {
+                console.log(`🚀  Kodbank server running on http://localhost:${PORT}`);
+            });
+        })
+        .catch((err) => {
+            console.error('❌  Failed to initialize database:', err);
+            process.exit(1);
         });
-    })
-    .catch((err) => {
-        console.error('❌  Failed to initialize database:', err);
-        process.exit(1);
-    });
+}
