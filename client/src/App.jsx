@@ -1,21 +1,95 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import Landing from './pages/Landing';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 
-export default function App() {
+/* ── Persistent Flowing Blue Wave ─────────────────────── */
+function BlueWave() {
   return (
-    <BrowserRouter>
-      {/* Animated monochrome background */}
-      <div className="bg-blobs" />
-      <div className="bg-blobs-extra" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
+    <div className="wave-bg">
+      {/* Layer 1 — large, slow */}
+      <svg
+        className="absolute bottom-0 left-0 w-full"
+        style={{ height: '100%' }}
+        viewBox="0 0 1440 560"
+        preserveAspectRatio="none"
+      >
+        <path fill="url(#waveGrad1)" d="M0,300 C320,420 640,200 960,310 C1120,370 1300,220 1440,290 L1440,560 L0,560 Z">
+          <animate attributeName="d" dur="9s" repeatCount="indefinite" values="
+            M0,300 C320,420 640,200 960,310 C1120,370 1300,220 1440,290 L1440,560 L0,560 Z;
+            M0,260 C320,160 640,380 960,250 C1120,190 1300,360 1440,310 L1440,560 L0,560 Z;
+            M0,340 C320,240 640,360 960,240 C1120,310 1300,200 1440,270 L1440,560 L0,560 Z;
+            M0,300 C320,420 640,200 960,310 C1120,370 1300,220 1440,290 L1440,560 L0,560 Z
+          " />
+        </path>
+        <defs>
+          <linearGradient id="waveGrad1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#2563EB" />
+            <stop offset="60%" stopColor="#3B82F6" />
+            <stop offset="100%" stopColor="#60A5FA" />
+          </linearGradient>
+        </defs>
+      </svg>
 
-      <Routes>
-        <Route path="/" element={<Register />} />
+      {/* Layer 2 — mid speed, lighter */}
+      <svg
+        className="absolute bottom-0 left-0 w-full"
+        style={{ height: '80%' }}
+        viewBox="0 0 1440 460"
+        preserveAspectRatio="none"
+      >
+        <path fill="rgba(59,130,246,0.35)" d="M0,260 C360,360 720,180 1080,280 C1260,340 1380,220 1440,260 L1440,460 L0,460 Z">
+          <animate attributeName="d" dur="7s" repeatCount="indefinite" values="
+            M0,260 C360,360 720,180 1080,280 C1260,340 1380,220 1440,260 L1440,460 L0,460 Z;
+            M0,310 C360,200 720,340 1080,220 C1260,270 1380,360 1440,290 L1440,460 L0,460 Z;
+            M0,280 C360,380 720,220 1080,320 C1260,240 1380,300 1440,340 L1440,460 L0,460 Z;
+            M0,260 C360,360 720,180 1080,280 C1260,340 1380,220 1440,260 L1440,460 L0,460 Z
+          " />
+        </path>
+      </svg>
+
+      {/* Layer 3 — fast, very light */}
+      <svg
+        className="absolute bottom-0 left-0 w-full"
+        style={{ height: '60%' }}
+        viewBox="0 0 1440 360"
+        preserveAspectRatio="none"
+      >
+        <path fill="rgba(96,165,250,0.20)" d="M0,220 C480,300 960,140 1440,240 L1440,360 L0,360 Z">
+          <animate attributeName="d" dur="5s" repeatCount="indefinite" values="
+            M0,220 C480,300 960,140 1440,240 L1440,360 L0,360 Z;
+            M0,280 C480,180 960,320 1440,200 L1440,360 L0,360 Z;
+            M0,240 C480,320 960,180 1440,280 L1440,360 L0,360 Z;
+            M0,220 C480,300 960,140 1440,240 L1440,360 L0,360 Z
+          " />
+        </path>
+      </svg>
+    </div>
+  );
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <BlueWave />
+      <AnimatedRoutes />
     </BrowserRouter>
   );
 }
