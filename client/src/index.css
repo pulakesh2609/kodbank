@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/* ── Custom theme tokens ─────────────────────────────── */
+:root {
+  --color-kodred: #E50914;
+  --color-kodred-dark: #B20710;
+  --color-kodbg: #0a0a0a;
+  --color-kodbg-card: rgba(255, 255, 255, 0.04);
+  --color-kodborder: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Global resets ───────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--color-kodbg);
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Animated background blobs ──────────────────────── */
+.bg-blobs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-blobs::before,
+.bg-blobs::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.35;
+  animation: floatBlob 12s ease-in-out infinite alternate;
+}
+
+.bg-blobs::before {
+  width: 500px;
+  height: 500px;
+  background: var(--color-kodred);
+  top: -10%;
+  left: -5%;
+}
+
+.bg-blobs::after {
+  width: 400px;
+  height: 400px;
+  background: #831010;
+  bottom: -10%;
+  right: -5%;
+  animation-delay: -6s;
+}
+
+@keyframes floatBlob {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(60px, 40px) scale(1.15); }
+  100% { transform: translate(-30px, 70px) scale(1.05); }
+}
+
+/* ── Glass card ─────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ── Input red glow on focus ────────────────────────── */
+.input-glow {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: #ffffff;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-glow::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.input-glow:focus {
+  border-color: var(--color-kodred);
+  box-shadow:
+    0 0 0 3px rgba(229, 9, 20, 0.15),
+    0 0 20px rgba(229, 9, 20, 0.1);
+}
+
+/* ── Primary button ─────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-kodred) 0%, var(--color-kodred-dark) 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s, opacity 0.2s;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(229, 9, 20, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Balance reveal animation ───────────────────────── */
+@keyframes balanceReveal {
+  0%   { opacity: 0; transform: scale(0.7) translateY(20px); }
+  60%  { opacity: 1; transform: scale(1.05) translateY(-5px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.balance-reveal {
+  animation: balanceReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Spinner ────────────────────────────────────────── */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Link style ─────────────────────────────────────── */
+.link-red {
+  color: var(--color-kodred);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.link-red:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
