@@ -30,22 +30,24 @@ export default function Login() {
             <div className="glass w-full max-w-md p-8 sm:p-10">
                 {/* Logo */}
                 <div className="mb-8 text-center">
-                    <h1 className="text-3xl font-extrabold tracking-tight">
-                        <span style={{ color: '#E50914' }}>Kod</span>bank
+                    <h1 className="text-3xl font-extrabold tracking-tight text-white">
+                        Kodbank
                     </h1>
-                    <p className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                    <p className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
                         Sign in to your account
                     </p>
                 </div>
+
+                <div className="divider" />
 
                 {/* Error */}
                 {error && (
                     <div
                         className="mb-4 rounded-lg px-4 py-3 text-sm"
                         style={{
-                            background: 'rgba(229, 9, 20, 0.12)',
-                            border: '1px solid rgba(229, 9, 20, 0.3)',
-                            color: '#ff6b6b',
+                            background: 'rgba(255, 255, 255, 0.06)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            color: '#cccccc',
                         }}
                     >
                         {error}
@@ -77,9 +79,9 @@ export default function Login() {
                     </button>
                 </form>
 
-                <p className="mt-6 text-center text-sm" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                <p className="mt-6 text-center text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
                     Don't have an account?{' '}
-                    <Link to="/" className="link-red">
+                    <Link to="/" className="link-mono">
                         Register
                     </Link>
                 </p>

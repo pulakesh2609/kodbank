@@ -6,8 +6,9 @@ import Dashboard from './pages/Dashboard';
 export default function App() {
   return (
     <BrowserRouter>
-      {/* Animated background */}
+      {/* Animated monochrome background */}
       <div className="bg-blobs" />
+      <div className="bg-blobs-extra" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
 
       <Routes>
         <Route path="/" element={<Register />} />
